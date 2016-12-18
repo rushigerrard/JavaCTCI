@@ -1,5 +1,7 @@
 package com.practice.linkedlist;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class LinkedList {
@@ -65,6 +67,7 @@ public class LinkedList {
 			tmp = tmp.getNext();
 		}
 		System.out.print(" ]");
+		System.out.println();
 	}
 	public void removeDuplicates() {
 		HashSet<Object> hs = new HashSet<>();
@@ -83,6 +86,102 @@ public class LinkedList {
 				prev = curr;
 				curr = curr.getNext();
 			}
+		}
+	}
+	/*
+	 * TO DO
+	 * */
+	public void reverseList() {
+		
+		
+	}
+	public void cycleInjection() {
+		if(head == null)
+			return ;
+		Node curr = head;
+		while(curr.getNext() != null){
+			curr = curr.getNext();
+		}
+		curr.setNext(head);
+	}
+	public boolean isCycle() {
+		Node slow = head;
+		Node fast = head;
+		while(fast.getNext() != null){
+			slow = slow.getNext();
+			fast = fast.getNext().getNext();
+			if(slow.equals(fast)){
+				System.out.println("Start of cycle is " + slow.getObject());
+				return true;
+			}
+		}
+		return false;
+	}
+	public void sum(LinkedList l1, LinkedList l2) {
+		
+		ArrayList<Integer> first = new ArrayList<>();
+		ArrayList<Integer> second = new ArrayList<>();
+		Node curr = l1.head;
+		
+		while(curr.getNext() != null){
+			first.add((Integer) curr.getObject());
+			curr = curr.getNext();
+		}
+		first.add((Integer) curr.getObject());
+		curr = l2.head;
+		while(curr.getNext() != null){
+			second.add((Integer) curr.getObject());
+			curr = curr.getNext();
+		}
+		second.add((Integer) curr.getObject());
+		ArrayList<Integer> third = new ArrayList<>();
+		int carry = 0;
+		int maxSize = 0;
+		if(first.size() > second.size()){
+			maxSize = first.size();
+			Collections.reverse(second);
+			for(int i = second.size(); i < first.size(); i++){
+				second.add(0);
+			}
+			Collections.reverse(second);
+		}else if(second.size() > first.size()){
+			maxSize = second.size();
+			Collections.reverse(first);
+			for(int i = first.size(); i < second.size(); i++){
+				first.add(0);
+			}
+			Collections.reverse(first);
+		}else{
+			maxSize = first.size();
+		}
+		
+
+		for(int i = maxSize - 1; i >= 0; i--){
+			int sum = first.get(i) + second.get(i) + carry;
+			if(sum > 9){
+				sum = sum % 10;
+				carry = 1;
+			}else{
+				carry = 0;
+			}
+			third.add(sum);
+		}
+		if(carry == 1)
+			third.add(carry);
+		
+		Collections.reverse(third);
+		
+		for(Integer i : third){
+			Node newNode = new Node(i, null);
+			if(head == null){
+				head = newNode;
+				continue;
+			}
+			curr = head;
+			while(curr.getNext() != null){
+				curr = curr.getNext();
+			}
+			curr.setNext(newNode);
 		}
 	}
 }
